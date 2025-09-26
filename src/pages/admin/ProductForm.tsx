@@ -1,18 +1,35 @@
-// import { useEffect, useState } from "react";
-// import type { Product } from "../../interface/products";
-// import axios from "axios";
+import { useEffect, useState } from "react";
+import type { Product } from "../../interface/products";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 const ProductForm = () => {
-    // const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
 
-    // useEffect(() =>{
-    //     try {
-    //         const fetchProducts = async () =>{
-    //             const res = await axios.get("http://localhost:3000/products");
-    //             setProducts(res.data);
-    //         }
-    //     }
-    // })
+   useEffect(() =>{
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get('https://dummyjson.com/products');
+            setProducts(response.data.products);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    fetchProducts();
+   },[])
+   const handleDelete = async (id: number) => {
+       if(confirm("Are you sure to delete this product?")){
+        try{
+            const res = await axios.delete(`http://localhost:3000/products/${id}`);
+            if(res.status === 200){
+                setProducts(products.filter(product => product.id !== id));
+                alert("Product deleted successfully");
+            }
+        }catch(error){
+            console.error(error);
+        }
+   } 
+   }
 
   return (
     <>
@@ -24,7 +41,7 @@ const ProductForm = () => {
                     Product name
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    Color
+                    Des
                 </th>
                 <th scope="col" className="px-6 py-3">
                     Category
@@ -32,51 +49,33 @@ const ProductForm = () => {
                 <th scope="col" className="px-6 py-3">
                     Price
                 </th>
+                <th scope="col" className="px-6 py-3">
+                    Action
+                </th>
             </tr>
         </thead>
         <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+            {products.map((product)=>(
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Apple MacBook Pro 17"
+                    {product.title}
                 </th>
                 <td className="px-6 py-4">
-                    Silver
+                    {product.description}
                 </td>
                 <td className="px-6 py-4">
-                    Laptop
+                    {product.category}
                 </td>
                 <td className="px-6 py-4">
-                    $2999
+                    {product.price}
+                </td>
+                <td className="px-6 py-4">
+                    <Link to={`/admin/products/${product.id}`} type="button" className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Edit</Link>
+                    <button onClick={()=> handleDelete( product.id)} type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>
                 </td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Microsoft Surface Pro
-                </th>
-                <td className="px-6 py-4">
-                    White
-                </td>
-                <td className="px-6 py-4">
-                    Laptop PC
-                </td>
-                <td className="px-6 py-4">
-                    $1999
-                </td>
-            </tr>
-            <tr className="bg-white dark:bg-gray-800">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Magic Mouse 2
-                </th>
-                <td className="px-6 py-4">
-                    Black
-                </td>
-                <td className="px-6 py-4">
-                    Accessories
-                </td>
-                <td className="px-6 py-4">
-                    $99
-                </td>
-            </tr>
+            ))}
+            
         </tbody>
     </table>
         </div>
