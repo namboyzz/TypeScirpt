@@ -50,7 +50,8 @@ const ProductForm = () => {
                     Price
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    Action
+                    Action---
+                    <Link to={"/admin/products/create"} type="button" className="border">Add</Link>
                 </th>
             </tr>
         </thead>
