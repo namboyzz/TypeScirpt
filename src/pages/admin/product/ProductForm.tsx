@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Product } from "../../interface/products";
+import type { Product } from "../../../interface/products";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -30,7 +30,6 @@ const ProductForm = () => {
         }
    } 
    }
-
   return (
     <>
     <div className="flex justify-end mb-4">

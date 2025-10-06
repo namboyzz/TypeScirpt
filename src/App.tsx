@@ -1,14 +1,14 @@
 
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import ProductForm from './pages/admin/ProductForm'
+import ProductForm from './pages/admin/product/ProductForm'
 import FormCreateProduct from './pages/admin/FormCreateProduct'
 import Home from './pages/client/Home'
 import MainLayout from './layout/MainLayout'
 import Products from './pages/client/Products'
 import AdminLayout from './layout/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
-import EditProduct from './pages/admin/EditProduct'
+import EditProduct from './pages/admin/product/EditProduct'
 
 function App() {
   return (
