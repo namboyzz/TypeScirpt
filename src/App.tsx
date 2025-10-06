@@ -9,6 +9,7 @@ import Products from './pages/client/Products'
 import AdminLayout from './layout/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
 import EditProduct from './pages/admin/product/EditProduct'
+import Auth from './pages/Auth'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path='/admin/products/add' element={<FormCreateProduct/>}/>
           <Route path='/admin/products/:id' element={<EditProduct/>}/>
         </Route>
+        <Route path="/auth" element={<Auth />} />
       
     </Routes>
     </>

@@ -15,8 +15,7 @@ export default function Header() {
         <nav className="hidden md:flex space-x-8 text-gray-700 font-medium">
           <Link to="/" className="hover:text-blue-600 transition">Trang chủ</Link>
           <Link to="/products" className="hover:text-blue-600 transition">Sản phẩm</Link>
-          <Link to="/login" className="hover:text-blue-600 transition">Đăng nhập</Link>
-          <Link to="/register" className="hover:text-blue-600 transition">Đăng ký</Link>
+          <Link to="/auth" className="hover:text-blue-600 transition">Đăng nhập</Link>
         </nav>
 
         {/* Nút menu mobile */}
