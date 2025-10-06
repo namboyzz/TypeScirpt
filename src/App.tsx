@@ -8,6 +8,7 @@ import MainLayout from './layout/MainLayout'
 import Products from './pages/client/Products'
 import AdminLayout from './layout/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
+import EditProduct from './pages/admin/EditProduct'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path='/admin/products' element={<ProductForm/>}/>
           <Route path='/admin/products/add' element={<FormCreateProduct/>}/>
+          <Route path='/admin/products/:id' element={<EditProduct/>}/>
         </Route>
       
     </Routes>

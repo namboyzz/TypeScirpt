@@ -2,25 +2,36 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const productSchema = z.object({
-  id: z.number().optional(),
   title: z.string(),
   price: z.number().min(1000, "Giá phải lớn hơn hoặc bằng 1000 VNĐ"),
   category: z.enum(["ao", "quan", "giay"],{message: "Danh mục không hợp lệ"}),
   description: z.string().optional(),
 })
 type ProductForm = z.infer<typeof productSchema>;
-const FormCreateProduct = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<ProductForm>({
+const EditProduct = () => {
+  const {id}= useParams();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<ProductForm>({
     resolver: zodResolver(productSchema)
   });
   const nav = useNavigate();
+  useEffect(() =>{
+    const fetchProduct = async () => {
+      const res = await axios.get(`http://localhost:3000/products/${id}`);
+      // Đảm bảo price là số
+      reset(res.data);
+      
+    }
+    fetchProduct();
+
+  },[id, reset])
   const onSubmit = async (data: ProductForm) => {
     try{
-      const res = await axios.post("http://localhost:3000/products", data);
-      if(res.status === 201){
+      const res = await axios.put(`http://localhost:3000/products/${id}`, data);
+      if(res.status === 200){
         alert(" add product successfully");
         nav("/admin/products");
       }
@@ -127,11 +138,11 @@ const FormCreateProduct = () => {
           type="submit"
           className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
         >
-          🛍️ Add Product
+          🛍️ Edit Product
         </button>
       </form>
     </div>
   );
 }
 
-export default FormCreateProduct
+export default EditProduct  

@@ -9,8 +9,8 @@ const ProductForm = () => {
    useEffect(() =>{
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('https://dummyjson.com/products');
-            setProducts(response.data.products);
+            const response = await axios.get('http://localhost:3000/products');
+            setProducts(response.data);
         } catch (error) {
             console.error(error);
         }
@@ -64,7 +64,7 @@ const ProductForm = () => {
         </thead>
         <tbody>
             {products.map((product)=>(
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                <tr key={product.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {product.title}
                 </th>
