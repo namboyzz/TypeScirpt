@@ -1729,6 +1729,45 @@
       "email": "admin111@gmail.com",
       "password": "$2a$10$xEr0MeHa1IPhZ19K/kAQ0evAO2baLVLbbw4m0FExa1sJwCK/rEPcy",
       "id": "5"
+    },
+    {
+      "id": "39f8",
+      "name": "nam",
+      "email": "123@gmail.com",
+      "password": "111111"
+    },
+    {
+      "id": "694f",
+      "name": "Admin",
+      "email": "namnam02012002@gmail.com",
+      "password": "111111"
+    },
+    {
+      "id": "e013",
+      "name": "Admin",
+      "email": "abc@gmail.com",
+      "password": "111111"
+    },
+    {
+      "id": "44ff",
+      "email": "abc@gmail.com",
+      "password": "111111"
+    },
+    {
+      "id": "1b12",
+      "email": "124@gmail.com",
+      "password": "111111"
+    },
+    {
+      "id": "f5da",
+      "email": "sdasad@gmail.com",
+      "password": "123123"
+    },
+    {
+      "id": "d60c",
+      "name": "đasa",
+      "email": "111@gmail.com",
+      "password": "111111"
     }
   ],
   "cart": [

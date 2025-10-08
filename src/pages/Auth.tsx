@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // 🧪 Schema đăng ký
 const registerSchema = z.object({
@@ -20,6 +22,7 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 type LoginFormData = z.infer<typeof loginSchema>;
 
 const Auth = () => {
+  const nav = useNavigate();
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
 
   // Form đăng ký
@@ -31,6 +34,7 @@ const Auth = () => {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   });
+    
 
   // Form đăng nhập
   const {
@@ -43,14 +47,42 @@ const Auth = () => {
   });
 
   // Submit đăng ký
-  const onSubmitRegister = (data: RegisterFormData) => {
-    console.log("📨 Đăng ký:", data);
+  const onSubmitRegister = async (data: RegisterFormData) => {
+    try {
+      const res = await axios.post(`http://localhost:3000/users`, data);
+      if (res.status === 201) {
+        alert("Đăng ký thành công");
+        setActiveTab("login");
+      }
+    }catch (err) {
+      alert("Đăng ký thất bại");
+      console.log(err);
+    }
     resetRegister();
   };
 
   // Submit đăng nhập
-  const onSubmitLogin = (data: LoginFormData) => {
-    console.log("🔐 Đăng nhập:", data);
+  const onSubmitLogin = async(data: LoginFormData) => {
+    try{
+      const res = await axios.get(`http://localhost:3000/users?email=${data.email}`);
+      if(res.data.length === 0){
+        alert("Tài khoản không tồn tại");
+        return;
+      }
+      const user = res.data[0];
+      if(user.password !== data.password){
+        alert("Mật khẩu không đúng");
+        return;
+      }
+        alert("Đăng nhập thành công");
+        // Lưu token vào localStorage
+        localStorage.setItem("user", JSON.stringify(user));
+        // Chuyển hướng về trang chủ
+        nav("/");
+    }catch(err){
+      alert("Đăng nhập thất bại hoặc tài khoản không tồn tại");
+      console.log(err);
+    }
     resetLogin();
   };
 
