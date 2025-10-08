@@ -1720,20 +1720,10 @@
       "id": "1"
     },
     {
-      "email": "hoangtiensinh@gmail.com",
-      "password": "$2a$10$1DaW4JImA/9DnFkbYM8TPOM2suKqM9GaJWx1FD7gYsxv4ppuiVtTS",
-      "id": "2"
-    },
-    {
       "email": "admin@gmail.com",
       "password": "$2a$10$Gp6g2TvkmwQKXIC0wSYGg.9004910fE.6iy7llK3p82WaD7KjWAOS",
       "id": "3",
       "role": "admin"
-    },
-    {
-      "email": "hoang111@gmail.com",
-      "password": "$2a$10$DEHUHra5ryVErUJqaxv0oul5eg4yFCaEViZESTVPelnRwxAk.6QcG",
-      "id": "4"
     },
     {
       "email": "admin111@gmail.com",
