@@ -32,7 +32,7 @@ const EditProduct = () => {
     try{
       const res = await axios.put(`http://localhost:3000/products/${id}`, data);
       if(res.status === 200){
-        alert(" add product successfully");
+        alert(" edit product successfully");
         nav("/admin/products");
       }
     }catch(err){
