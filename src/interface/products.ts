@@ -6,4 +6,5 @@ export interface Product {
   price: number
   description: string
   category: string
+  quantity: number
 }

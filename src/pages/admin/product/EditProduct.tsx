@@ -10,14 +10,19 @@ const productSchema = z.object({
   price: z.number().min(1000, "Giá phải lớn hơn hoặc bằng 1000 VNĐ"),
   category: z.enum(["ao", "quan", "giay"],{message: "Danh mục không hợp lệ"}),
   description: z.string().optional(),
+  image: z.string().url().optional(),
+  thumbnail: z.string().url().optional(),
+  quantity: z.number().min(0,{message: "Số lượng không được âm"}).optional()
 })
 type ProductForm = z.infer<typeof productSchema>;
 const EditProduct = () => {
   const {id}= useParams();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<ProductForm>({
+  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<ProductForm>({
     resolver: zodResolver(productSchema)
   });
   const nav = useNavigate();
+  const imageValue = watch("thumbnail");
+
   useEffect(() =>{
     const fetchProduct = async () => {
       const res = await axios.get(`http://localhost:3000/products/${id}`);
@@ -108,7 +113,7 @@ const EditProduct = () => {
         </div>
 
         {/* Ảnh */}
-        {/* <div>
+        <div>
           <label className="block text-sm font-medium mb-2 text-gray-700">URL ảnh</label>
           <input
           {...register("image")}
@@ -118,20 +123,33 @@ const EditProduct = () => {
             
             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
           />
-          {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
-        </div> */}
-
+          {errors.thumbnail && <p className="text-red-500 text-sm">{errors.thumbnail.message}</p>}
+        </div> 
         {/* Preview ảnh */}
-        {/*formData.image && (
+         {imageValue && ( 
           <div className="mt-4">
             <p className="text-sm text-gray-600 mb-2">📸 Xem trước ảnh:</p>
             <img
-              src={formData.image}
+              src={imageValue}
               alt="Preview"
               className="w-40 h-40 object-cover rounded-lg border"
             />
           </div>
         )}
+        {/* Quantity */}
+        <div>
+          <label className="block text-sm font-medium mb-2 text-gray-700">Số lượng</label>
+          <input
+          {...register("quantity", { valueAsNumber: true })}
+            type="number"
+            name="quantity"
+            placeholder="Nhập số lượng sản phẩm"
+            
+            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            required
+          />
+          {errors.quantity && <p className="text-red-500 text-sm">{errors.quantity.message}</p>}
+        </div>
 
         {/* Nút submit */}
         <button
