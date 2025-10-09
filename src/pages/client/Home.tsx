@@ -1,61 +1,90 @@
 import { useEffect, useState } from "react";
 import type { Product } from "../../interface/products";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
- function Home() {
-    const [products, setProducts] = useState<Product[]>([]);
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await axios.get('http://localhost:3000/products');
-                setProducts(response.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchProducts();
-    }, []);
+function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState(""); // "asc" | "desc" | ""
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/products');
+        setProducts(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  // Lọc sản phẩm
+  let filtered = products.filter(product =>
+    product.title.toLowerCase().includes(search.toLowerCase()) &&
+    (category ? product.category === category : true)
+  );
+  if (price === "asc") {
+    filtered = filtered.slice().sort((a, b) => a.price - b.price);
+  }
+  if (price === "desc") {
+    filtered = filtered.slice().sort((a, b) => b.price - a.price);
+  }
+
+  // Lấy danh sách danh mục duy nhất
+  const categories = Array.from(new Set(products.map(p => p.category)));
+
   return (
     <div className="space-y-16">
       {/* Banner */}
       <section className="bg-gradient-to-r from-blue-500 to-blue-700 text-white text-center py-24 rounded-lg shadow-md">
         <h1 className="text-5xl font-bold mb-4">Chào mừng đến với MyShop 🛍️</h1>
         <p className="text-lg mb-6">Khám phá sản phẩm chất lượng với giá cực tốt!</p>
-        <button className="bg-white text-blue-600 font-semibold px-6 py-3 rounded-full hover:bg-blue-100 transition">
+        <Link to="/products" className="bg-white text-blue-600 font-semibold px-6 py-3 rounded-full hover:bg-blue-100 transition">
           Mua sắm ngay
-        </button>
+        </Link>
       </section>
 
-      {/* Thanh tìm kiếm */}
-      <section className="flex justify-center">
+      {/* Thanh tìm kiếm & bộ lọc */}
+      <section className="flex flex-col md:flex-row gap-4 justify-center items-center">
         <input
           type="text"
           placeholder="Tìm kiếm sản phẩm..."
-          className="w-full md:w-1/2 px-4 py-3 rounded-full border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
+          className="w-full md:w-1/3 px-4 py-3 rounded-full border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
         />
+        <select
+          className="px-4 py-3 rounded-full border border-gray-300"
+          value={category}
+          onChange={e => setCategory(e.target.value)}
+        >
+          <option value="">Tất cả danh mục</option>
+          {categories.map(c => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+        <select
+          className="px-4 py-3 rounded-full border border-gray-300"
+          value={price}
+          onChange={e => setPrice(e.target.value)}
+        >
+          <option value="">Sắp xếp giá</option>
+          <option value="asc">Giá tăng dần</option>
+          <option value="desc">Giá giảm dần</option>
+        </select>
       </section>
 
       {/* Danh mục */}
-      <section>
-        <h2 className="text-3xl font-bold text-center mb-8">Danh mục nổi bật</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {["Thời trang", "Điện tử", "Phụ kiện", "Đồ gia dụng"].map((category) => (
-            <div
-              key={category}
-              className="bg-white rounded-xl shadow hover:shadow-lg transition text-center py-8 cursor-pointer hover:-translate-y-1"
-            >
-              <div className="text-4xl mb-4">📦</div>
-              <h3 className="text-xl font-semibold">{category}</h3>
-            </div>
-          ))}
-        </div>
-      </section>
+      
 
       {/* Sản phẩm nổi bật */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-8">Sản phẩm nổi bật</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {products.map((product) => (
+          {filtered.map((product) => (
             <div
               key={product.id}
               className="bg-white rounded-xl shadow hover:shadow-lg transition p-4 text-center hover:-translate-y-1"
