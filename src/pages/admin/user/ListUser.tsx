@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 import type { User } from "../../../interface/users";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import instance from "../../../config/api";
 
 const ListUser = () => {
     const [users, setUsers] = useState<User[]>([]);
     useEffect(()=>{
         const fetchUsers = async () => {
             try{
-                const res = await axios.get(`http://localhost:3000/users`);
+                const res = await instance.get(`/users`);
                 setUsers(res.data);
             }catch(err){
                 console.log(err);
@@ -18,7 +18,7 @@ const ListUser = () => {
     },[])
     const handleDelete = async (id: string | number | undefined) => {
         try{
-           const res =  await axios.delete(`http://localhost:3000/users/${id}`);
+           const res =  await instance.delete(`/users/${id}`);
            if(confirm("Bạn có chắc chắn muốn xóa user này không?") || res.status === 200){
             alert("Xóa user thành công");
             setUsers(users.filter(user => user.id !== id));

@@ -11,6 +11,7 @@ import Dashboard from './pages/admin/Dashboard'
 import EditProduct from './pages/admin/product/EditProduct'
 import Auth from './pages/Auth'
 import ListUser from './pages/admin/user/ListUser'
+import Cart from './pages/client/Cart'
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
       <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/cart" element={<Cart />} />
+
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />

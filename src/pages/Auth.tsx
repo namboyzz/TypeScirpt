@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import instance from "../config/api";
 
 // 🧪 Schema đăng ký
 const registerSchema = z.object({
@@ -49,7 +49,7 @@ const Auth = () => {
   // Submit đăng ký
   const onSubmitRegister = async (data: RegisterFormData) => {
     try {
-      const res = await axios.post(`http://localhost:3000/users`, data);
+      const res = await instance.post(`/users`, data);
       if (res.status === 201) {
         alert("Đăng ký thành công");
         setActiveTab("login");
@@ -64,7 +64,7 @@ const Auth = () => {
   // Submit đăng nhập
   const onSubmitLogin = async(data: LoginFormData) => {
     try{
-      const res = await axios.get(`http://localhost:3000/users?email=${data.email}`);
+      const res = await instance.get(`/users?email=${data.email}`);
       if(res.data.length === 0){
         alert("Tài khoản không tồn tại");
         return;

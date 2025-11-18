@@ -2,9 +2,9 @@
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import instance from "../../../config/api";
 
 const productSchema = z.object({
   id: z.number().optional(),
@@ -28,7 +28,7 @@ const FormCreateProduct = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/products");
+        const res = await instance.get("/products");
         // Lấy danh mục duy nhất từ tất cả sản phẩm
         const uniqueCategories = Array.from(
           new Set(res.data
@@ -47,7 +47,7 @@ const FormCreateProduct = () => {
 
   const onSubmit = async (data: ProductForm) => {
     try{
-      const res = await axios.post("http://localhost:3000/products", data);
+      const res = await instance.post("/products", data);
       if(res.status === 201){
         alert(" add product successfully");
         nav("/admin/products");

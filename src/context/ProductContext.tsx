@@ -1,49 +1,47 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext } from "react";
+import { createContext, useReducer } from "react";
 import type { Product } from "../interface/products";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import instance from "../config/api";
+import productReducer from "../reducers/productRecuder";
 
 type ProductContextType = {
-    products: Product[];
+    state : { products: Product[]};
     handleRemove: (id: number) => void;
     onSubmitProduct: (data: Product) => void;
-    fetchProducts: () => Promise<void>;
-
+    fetchProducts: () => void;
 };
 export const ProductContext = createContext<ProductContextType>({} as ProductContextType);
 
 export const ProductProvider = ({children} : {children: React.ReactNode}) => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [state, dispatch] = useReducer(productReducer, {products: []});
     const fetchProducts = async () => {
-            const {data} = await axios.get(`http://localhost:3000/products`);
-            setProducts(data);
-        }
+        const {data} = await instance.get("/products");
+        dispatch({type: "SET_PRODUCTS", payload: data});
+    }
     
-    useEffect(() => {
-        fetchProducts();
-    },[]);
     const handleRemove = async (id: number) => {
         if(confirm("Bạn có chắc chắn muốn xóa không?")){
-            await axios.delete(`http://localhost:3000/products/${id}`);
-            setProducts(prev => prev.filter(item => item.id !== id));
+            await instance.delete(`/products/${id}`);
+            alert("Xóa thành công");
+            dispatch({type: "DELETE_PRODUCT", payload: id});
         }
     }
     const onSubmitProduct = async (data: Product) => {
        try{
          if(data.id ){
-            await axios.patch(`http://localhost:3000/products/${data.id}`, data);
+            await instance.patch(`/products/${data.id}`, data);
+            dispatch({type: "UPDATE_PRODUCT", payload: data});
         }else{
-            await axios.post(`http://localhost:3000/products`, data);
+            await instance.post(`/products`, data);
+            dispatch({type: "ADD_PRODUCT", payload: data});
         }
-        await fetchProducts();
 
        }catch(err){
         console.log(err);
         }
     }
     return(
-    <ProductContext.Provider value={{products, handleRemove, onSubmitProduct, fetchProducts}}>
+    <ProductContext.Provider value={{state, handleRemove, onSubmitProduct, fetchProducts}}>
         {children}
     </ProductContext.Provider>
         )

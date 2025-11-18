@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { ProductContext } from "../../../context/ProductContext";
 
 const ProductForm = () => {
-    const {products, handleRemove, fetchProducts} = useContext(ProductContext);
+    const {state, handleRemove, fetchProducts } = useContext(ProductContext);
     useEffect(() => {
         fetchProducts();
-    }, [fetchProducts]);
+      }, [fetchProducts]);
+
+    
   return (
     <>
     <div className="flex justify-end mb-4">
@@ -45,7 +47,7 @@ const ProductForm = () => {
             </tr>
         </thead>
         <tbody>
-            {products.map(product=>(
+            {state.products.map(product=>(
                 <tr key={product.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                 <td className="px-6 py-4">
                     <img src={product.thumbnail} alt={product.title} className="w-20 h-20 object-cover rounded-lg"/>
