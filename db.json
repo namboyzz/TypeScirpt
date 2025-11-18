@@ -1704,59 +1704,15 @@
   ],
   "users": [
     {
-      "email": "email@gmail.com",
-      "password": "$2a$10$BuYEzGZXv2z1JVhFcHi/i.ELHds2pjryszUZLIPiNh.BZY7SPHw46",
-      "id": "1"
-    },
-    {
-      "email": "admin@gmail.com",
-      "password": "$2a$10$Gp6g2TvkmwQKXIC0wSYGg.9004910fE.6iy7llK3p82WaD7KjWAOS",
-      "id": "3",
+      "email": "123@gmail.com",
+      "password": "$2a$10$7ZsNJXdV9tSZKrRPrtQmBOyIH/ezrbHHckOV.pipygFn4hXVyMGNG",
+      "id": 1,
       "role": "admin"
     },
     {
-      "email": "admin111@gmail.com",
-      "password": "$2a$10$xEr0MeHa1IPhZ19K/kAQ0evAO2baLVLbbw4m0FExa1sJwCK/rEPcy",
-      "id": "5"
-    },
-    {
-      "id": "39f8",
-      "name": "nam",
-      "email": "123@gmail.com",
-      "password": "111111"
-    },
-    {
-      "id": "694f",
-      "name": "Admin",
-      "email": "namnam02012002@gmail.com",
-      "password": "111111"
-    },
-    {
-      "id": "e013",
-      "name": "Admin",
-      "email": "abc@gmail.com",
-      "password": "111111"
-    },
-    {
-      "id": "44ff",
-      "email": "abc@gmail.com",
-      "password": "111111"
-    },
-    {
-      "id": "1b12",
-      "email": "124@gmail.com",
-      "password": "111111"
-    },
-    {
-      "id": "f5da",
-      "email": "sdasad@gmail.com",
-      "password": "123123"
-    },
-    {
-      "id": "d60c",
-      "name": "đasa",
       "email": "111@gmail.com",
-      "password": "111111"
+      "password": "$2a$10$F9FmJlab7O6oK0LEW4oP7uzvpSyX1e.LA7l7uJAY0w0k0GefsXWL.",
+      "id": 2
     }
   ],
   "cart": [

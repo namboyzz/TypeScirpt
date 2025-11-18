@@ -6,7 +6,7 @@ const ProductForm = () => {
     const {state, handleRemove, fetchProducts } = useContext(ProductContext);
     useEffect(() => {
         fetchProducts();
-      }, [fetchProducts]);
+      }, []);
 
     
   return (

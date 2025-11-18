@@ -7,7 +7,6 @@ import instance from "../config/api";
 
 // 🧪 Schema đăng ký
 const registerSchema = z.object({
-  name: z.string().min(3, "Tên phải có ít nhất 3 ký tự"),
   email: z.string().email("Email không hợp lệ"),
   password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
 });
@@ -49,7 +48,7 @@ const Auth = () => {
   // Submit đăng ký
   const onSubmitRegister = async (data: RegisterFormData) => {
     try {
-      const res = await instance.post(`/users`, data);
+      const res = await instance.post(`/register`, data);
       if (res.status === 201) {
         alert("Đăng ký thành công");
         setActiveTab("login");
@@ -64,20 +63,19 @@ const Auth = () => {
   // Submit đăng nhập
   const onSubmitLogin = async(data: LoginFormData) => {
     try{
-      const res = await instance.get(`/users?email=${data.email}`);
-      if(res.data.length === 0){
-        alert("Tài khoản không tồn tại");
-        return;
-      }
-      const user = res.data[0];
-      if(user.password !== data.password){
-        alert("Mật khẩu không đúng");
-        return;
-      }
+      const res = await instance.post(`/login`, data);
+      
         alert("Đăng nhập thành công");
         // Lưu token vào localStorage
-        localStorage.setItem("user", JSON.stringify(user));
-        // Chuyển hướng về trang chủ
+        localStorage.setItem("token", res.data.accessToken);
+         localStorage.setItem("user", JSON.stringify(res.data.user));
+        if(res.data.user.role === 'admin'){
+          nav("/admin");
+          setTimeout(() => {
+            alert("chao mừng admin đã đến với trang quản trị");
+          }, 900);
+          return;
+        }
         nav("/");
     }catch(err){
       alert("Đăng nhập thất bại hoặc tài khoản không tồn tại");
@@ -85,7 +83,7 @@ const Auth = () => {
     }
     resetLogin();
   };
-
+  
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="bg-white w-full max-w-md shadow-xl rounded-2xl p-8">
@@ -158,21 +156,6 @@ const Auth = () => {
         {/* Form đăng ký */}
         {activeTab === "register" && (
           <form onSubmit={handleSubmitRegister(onSubmitRegister)} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium mb-2">Họ và tên</label>
-              <input
-                type="text"
-                {...registerRegister("name")}
-                placeholder="Nhập họ tên"
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${
-                  registerErrors.name ? "border-red-500" : ""
-                }`}
-              />
-              {registerErrors.name && (
-                <p className="text-red-500 text-sm mt-1">{registerErrors.name.message}</p>
-              )}
-            </div>
-
             <div>
               <label className="block text-sm font-medium mb-2">Email</label>
               <input
